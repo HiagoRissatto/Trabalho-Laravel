@@ -8,8 +8,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/users',[UserController::class, 'index'])->name('admin.users.index');
-Route::get('admin/user/{user}' ,[UserController::class, 'show']);
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
+    Route::get('/users', [UserController::class, 'index'])
+    ->name('admin.users.index');
+    Route::get('/user/{user}', [UserController::class, 'show']);
+});
+
+Route::get('/login', function(){
+    return view('auth.login');
+})->name('login');
 
 Route::get('register', [UserController::class, 'register']);
 Route::post('store', [UserController::class, 'create'])->name('users.store');

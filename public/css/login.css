@@ -1,0 +1,10 @@
+body.login-page {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0f172a;
+    font-family: Arial, sans-serif;
+    color: #f8fafc;
+}
