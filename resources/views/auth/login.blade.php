@@ -11,8 +11,8 @@
         <p>Entre com suas credenciais</p>
         <form method="POST" action="{{ route('login.store') }}">
             @csrf
-            @error('email')
             <label for="email">E-mail</label>
+            @error('email')
             <p class="error-message">{{ $message }}</p>
             @enderror
             <input type="email" id="email" name=email required>

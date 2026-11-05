@@ -17,7 +17,16 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect('/');
+            $user = Auth::user();
+
+            $isAdmin = $user->profile()
+            ->where('type', 'admin')
+            ->exists();
+
+            if($isAdmin){
+                return redirect()->intended(route('admin.users.index'));
+            }
+            return redirect()->intended('/');
         }
         return back()->withErrors([
             'email'=> 'E-mail ou senha errados',
