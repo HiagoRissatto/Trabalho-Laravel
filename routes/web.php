@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,6 +18,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
 Route::get('/login', function(){
     return view('auth.login');
 })->name('login');
+Route::post('/login', [AuthController::class, 'login'])
+->name('login.store');
+
+Route::post('/logout', [AuthController::class, 'logout'])
+->middleware('auth')
+->name('logout');
 
 Route::get('register', [UserController::class, 'register']);
 Route::post('store', [UserController::class, 'create'])->name('users.store');

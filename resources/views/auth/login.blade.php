@@ -9,9 +9,12 @@
     <div class="login-container">
         <h1>Bem-vindo de volta</h1>
         <p>Entre com suas credenciais</p>
-        <form method="POST" action="/login">
+        <form method="POST" action="{{ route('login.store') }}">
             @csrf
+            @error('email')
             <label for="email">E-mail</label>
+            <p class="error-message">{{ $message }}</p>
+            @enderror
             <input type="email" id="email" name=email required>
             <label for="password">Senha</label>
             <input type="password" id="password" name="password" required>
