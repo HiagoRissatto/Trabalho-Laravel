@@ -19,6 +19,12 @@
             <label for="password">Senha</label>
             <input type="password" id="password" name="password" required>
             <button type="submit">Entrar</button>
+            <div class="register-link">
+                <p>
+                    Ainda nao possui cadastro?
+                    <a href="{{ url('/register') }}">Cadastre-se</a>
+                </p>
+            </div>
         </form>
     </div>
 

@@ -45,8 +45,14 @@ class UserController extends Controller
         'password' => 'required|string|min:8',
     ]);
 
-    User::create($input);
-    return redirect()->route('admin.users.index');
+    $user = User::create($input);
+
+    $user->profile()->create([
+        'type' => 'user',
+        'description' => 'Usuario comum',
+    ]);
+    return redirect()->route('login')
+    ->with('sucess', 'Cadastro realizado, faça seu login');
    }
    
 
