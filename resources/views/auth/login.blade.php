@@ -9,6 +9,11 @@
     <div class="login-container">
         <h1>Bem-vindo de volta</h1>
         <p>Entre com suas credenciais</p>
+        @if (session('sucess'))
+            <p class="sucess-message">
+                {{ session('sucess') }}
+            </p>
+        @endif
         <form method="POST" action="{{ route('login.store') }}">
             @csrf
             <label for="email">E-mail</label>

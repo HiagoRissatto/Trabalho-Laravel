@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -45,16 +46,17 @@ class UserController extends Controller
         'password' => 'required|string|min:8',
     ]);
 
+    DB::transaction(function () use ($input){
     $user = User::create($input);
 
     $user->profile()->create([
         'type' => 'user',
         'description' => 'Usuario comum',
     ]);
+    });
     return redirect()->route('login')
     ->with('sucess', 'Cadastro realizado, faça seu login');
    }
-   
 
     public function forgotPassword()
     {

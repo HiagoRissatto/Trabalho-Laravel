@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -13,8 +15,19 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
         ]);
+        $key = Str::lower($request->input('email')) . '|' . $request->ip();
+
+        RateLimiter::hit($key, 60);
+        if (RateLimiter::tooManyAttempts($key,5)){
+            $seconds = RateLimiter::availableIn($key);
+            return back()->withErrors([
+                'email'=>"Muitas tentativas, tente novamente em {$seconds} segundos",
+            ])->onlyInput('email');
+        }
+        
 
         if (Auth::attempt($credentials)) {
+            RateLimiter::clear($key);
             $request->session()->regenerate();
 
             $user = Auth::user();
