@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <body class="login-page">
-    <div class="login-containere">
+    <div class="login-container">
         <h1>Bem-vindo de volta</h1>
         <p>Entre com suas credenciais</p>
         <form method="POST" action="/login">
