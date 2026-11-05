@@ -15,6 +15,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $user = $request->user();
+        if(!$user || !$user->profile()->where('type','admin')->exists()){
+            abort(403, 'Acesso não autorizado');
+        }
         return $next($request);
     }
 }
