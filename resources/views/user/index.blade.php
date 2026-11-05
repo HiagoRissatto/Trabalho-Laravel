@@ -42,6 +42,9 @@
                 <h1>Gerenciamento de usuários</h1>
                 <p>Visualize e gerencie os usuários cadastrados.</p>
             </div>
+            <a href="{{ route('admin.users.create') }}" class="btn-create">
+                + Cadastrar usuário
+            </a>
         </div>
 
         <section class="stats">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -54,9 +55,13 @@ class UserController extends Controller
         'description' => 'Usuario comum',
     ]);
     });
+    if(
+        Auth::check() &&
+        Auth::user()->profile()->where('type','admin')->exists()
+    ){
     return redirect()->route('login')
-    ->with('sucess', 'Cadastro realizado, faça seu login');
-   }
+    ->with('success', 'Cadastro realizado, faça seu login');
+   }}
 
     public function forgotPassword()
     {

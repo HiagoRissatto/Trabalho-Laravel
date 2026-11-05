@@ -13,6 +13,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
     Route::get('/users', [UserController::class, 'index'])
     ->name('admin.users.index');
     Route::get('/user/{user}', [UserController::class, 'show']);
+    Route::get('/register',[UserController::class, 'register'])
+->name('admin.users.create');
+
 });
 
 Route::get('/login', function(){

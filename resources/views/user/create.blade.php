@@ -1,90 +1,90 @@
 
 @extends('layouts.default')
 
-@section('classe-body', 'register-page bg-body-secondary')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/register.css') }}">
+@endpush
+
+@section('classe-body', 'register-page')
 
 @section('content')
-    <main class="register-box">
-        <h1 class="register-logo">
-            <a href="{{ url('/') }}"><b>Bem-vindo</b></a>
+
+<main class="register-box">
+
+    <div class="register-card">
+
+        <h1 class="register-title">
+            {{ request()->routeIs('admin.users.create') ? 'Cadastrar usuário' : 'Criar conta' }}
         </h1>
 
-        <div class="card">
-            <div class="card-body register-card-body">
-                <p class="register-box-msg">Preencha os campos para se registrar</p>
+        <p class="register-description">
+            Preencha os campos abaixo para realizar o cadastro.
+        </p>
 
-                <form action="{{ route('users.store') }}" method="POST">
-                    @csrf
-
-                    @if ($errors->any())
-                        @foreach ($errors->all() as $error)
-                            <div class="error">{{ $error }}</div>
-                        @endforeach
-                    @endif
-
-                    <label class="visually-hidden" for="name">Nome</label>
-                    <div class="input-group mb-3">
-                        <input
-                            id="name"
-                            name="name"
-                            type="text"
-                            class="form-control"
-                            placeholder="Nome"
-                            value="{{ old('name') }}"
-                            required
-                        >
-                        <div class="input-group-text">
-                            <span class="bi bi-person"></span>
-                        </div>
-                    </div>
-
-                    <label class="visually-hidden" for="email">Email</label>
-                    <div class="input-group mb-3">
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            class="form-control"
-                            placeholder="Email"
-                            value="{{ old('email') }}"
-                            required
-                        >
-                        <div class="input-group-text">
-                            <span class="bi bi-envelope"></span>
-                        </div>
-                    </div>
-
-                    <label class="visually-hidden" for="password">Senha</label>
-                    <div class="input-group mb-3">
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            class="form-control"
-                            placeholder="Senha"
-                            required
-                        >
-                        <div class="input-group-text">
-                            <span class="bi bi-lock-fill"></span>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center">
-                        <div class="col-4">
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">
-                                    Enviar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-                <p class="text-center mt-3">
-                    Já possui uma conta?
-                    <a href="{{ route('login') }}">Entrar</a>
-                </p>
+        @if ($errors->any())
+            <div class="register-error">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
             </div>
-        </div>
-    </main>
+        @endif
+
+        <form action="{{ route('users.store') }}" method="POST">
+            @csrf
+
+            <label for="name">Nome completo</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Digite seu nome completo"
+                value="{{ old('name') }}"
+                autocomplete="name"
+                required
+            >
+
+            <label for="email">E-mail</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="seu@email.com"
+                value="{{ old('email') }}"
+                autocomplete="email"
+                required
+            >
+
+            <label for="password">Senha</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Mínimo de 8 caracteres"
+                minlength="8"
+                autocomplete="new-password"
+                required
+            >
+
+            <button type="submit" class="register-submit">
+                {{ request()->routeIs('admin.users.create') ? 'Cadastrar usuário' : 'Criar conta' }}
+            </button>
+        </form>
+
+        @if (request()->routeIs('admin.users.create'))
+            <p class="register-login">
+                <a href="{{ route('admin.users.index') }}">
+                    Voltar ao painel administrativo
+                </a>
+            </p>
+        @else
+            <p class="register-login">
+                Já possui uma conta?
+                <a href="{{ route('login') }}">Entrar</a>
+            </p>
+        @endif
+
+    </div>
+
+</main>
+
 @endsection
