@@ -29,7 +29,7 @@
             </div>
         @endif
 
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ request()->routeIs('admin.users.create') ? route('admin.users.store') : route('users.store') }}" method="POST">
             @csrf
 
             <label for="name">Nome completo</label>

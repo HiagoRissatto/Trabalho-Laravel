@@ -13,55 +13,63 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    
-   public function index(){
-    $users = User::paginate(5);
 
-    return view('user.index',[
-        'users' => $users,
-        'title' => 'Lista de usuario do Sistema'
-    ]);
-   }
+    public function index()
+    {
+        $users = User::paginate(5);
 
-   public function show(int $id)
-   {
-    $user = new User();
-    $user = $user->show_user($id);
-  
-    return view('user.show',[
-        'user' => $user]);
+        return view('user.index', [
+            'users' => $users,
+            'title' => 'Lista de usuario do Sistema'
+        ]);
+    }
 
-   }
+    public function show(int $id)
+    {
+        $user = new User();
+        $user = $user->show_user($id);
 
-   public function register()
-   {
-    return view('user.create');
-   }
+        return view('user.show', [
+            'user' => $user
+        ]);
 
-   public function create(Request $request)
-   {
-    
-    $input = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8',
-    ]);
+    }
 
-    DB::transaction(function () use ($input){
-    $user = User::create($input);
+    public function register()
+    {
+        return view('user.create');
+    }
 
-    $user->profile()->create([
-        'type' => 'user',
-        'description' => 'Usuario comum',
-    ]);
-    });
-    if(
-        Auth::check() &&
-        Auth::user()->profile()->where('type','admin')->exists()
-    ){
-    return redirect()->route('login')
-    ->with('success', 'Cadastro realizado, faça seu login');
-   }}
+    public function create(Request $request)
+    {
+
+        $input = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+
+        DB::transaction(function () use ($input) {
+            $user = User::create($input);
+
+            $user->profile()->create([
+                'type' => 'user',
+                'description' => 'Usuario comum',
+            ]);
+        });
+        if (
+            $request->routeIs('admin.users.store')
+        ) {
+            return redirect()->route('admin.users.index')
+                ->with('success', 'Usuário cadastrado com sucesso!');
+        } {
+            return redirect()->route('admin.users.index')
+                ->with('success', 'Cadastro realizado, faça seu login');
+
+        }
+        return redirect()->route('login')
+            ->with('success', 'Cadastro realizado, faça login');
+    }
 
     public function forgotPassword()
     {
