@@ -92,6 +92,7 @@
             @endauth
 
         </div>
+        <!-- /.Start col -->
 
         <section class="features">
             <div class="feature-card">

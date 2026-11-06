@@ -7,7 +7,8 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('autenyticado');
+
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function(){
     Route::get('/users', [UserController::class, 'index'])
